@@ -1,0 +1,17 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: An AWS Serverless Specification template describing your function.
+Resources:
+  LAMBDANAMEPLACEHOLDER:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: LambdaFunctionOverHttps.handler
+      Runtime: python3.9
+      CodeUri: .
+      Description: ''
+      MemorySize: 128
+      Timeout: 3
+      Role: >-
+        arn:aws:iam::741629726032:role/service-role/LAMBDANAMEPLACEHOLDER-role-e6k5xtxf
+      RuntimePolicy:
+        UpdateRuntimeOn: Auto

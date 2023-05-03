@@ -1,0 +1,125 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  LAMBDANAMEPLACEHOLDERApp
+
+  SAM Template for LAMBDANAMEPLACEHOLDERApp
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  LAMBDANAMEPLACEHOLDERLambdaVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+  LAMBDANAMEPLACEHOLDERLambdaSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: LAMBDANAMEPLACEHOLDER + Lambda on SAM Security Group
+      VpcId: !Ref LAMBDANAMEPLACEHOLDERLambdaVpc
+      SecurityGroupEgress:
+      - CidrIp: 0.0.0.0/0
+        FromPort: 0
+        ToPort: 65535
+        IpProtocol: tcp
+      SecurityGroupIngress:
+      - CidrIp: 0.0.0.0/0
+        FromPort: 0
+        ToPort: 65535
+        IpProtocol: tcp
+  LAMBDANAMEPLACEHOLDERLambdaSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref LAMBDANAMEPLACEHOLDERLambdaVpc
+      AvailabilityZone: !Select [0, !GetAZs '']
+      MapPublicIpOnLaunch: false
+      CidrBlock: 10.0.0.0/24
+  LAMBDANAMEPLACEHOLDERLambdaSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref LAMBDANAMEPLACEHOLDERLambdaVpc
+      AvailabilityZone: !Select [1, !GetAZs '']
+      MapPublicIpOnLaunch: false
+      CidrBlock: 10.0.1.0/24
+  LAMBDANAMEPLACEHOLDERFileSystem:
+    Type: AWS::LAMBDANAMEPLACEHOLDER::FileSystem
+  MountTargetA:
+    Type: AWS::LAMBDANAMEPLACEHOLDER::MountTarget
+    Properties:
+      FileSystemId: !Ref LAMBDANAMEPLACEHOLDERFileSystem
+      SubnetId: !Ref LAMBDANAMEPLACEHOLDERLambdaSubnetA
+      SecurityGroups:
+      - !Ref LAMBDANAMEPLACEHOLDERLambdaSecurityGroup
+  MountTargetB:
+    Type: AWS::LAMBDANAMEPLACEHOLDER::MountTarget
+    Properties:
+      FileSystemId: !Ref LAMBDANAMEPLACEHOLDERFileSystem
+      SubnetId: !Ref LAMBDANAMEPLACEHOLDERLambdaSubnetB
+      SecurityGroups:
+      - !Ref LAMBDANAMEPLACEHOLDERLambdaSecurityGroup
+  AccessPoint:
+    Type: AWS::LAMBDANAMEPLACEHOLDER::AccessPoint
+    Properties:
+      FileSystemId: !Ref LAMBDANAMEPLACEHOLDERFileSystem
+      PosixUser:
+        Gid: '1000'
+        Uid: '1000'
+      RootDirectory:
+        Path: /lambda
+        CreationInfo:
+          OwnerGid: '1000'
+          OwnerUid: '1000'
+          Permissions: '755'
+  LAMBDANAMEPLACEHOLDERFunction:
+    Type: AWS::Serverless::Function
+    DependsOn:
+    - MountTargetA
+    - MountTargetB
+    Properties:
+      CodeUri: LAMBDANAMEPLACEHOLDER/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Architectures:
+      - x86_64
+      Role: >-
+        arn:aws:iam::741629726032:role/service-role/LAMBDANAMEPLACEHOLDER-role-e6k5xtxf
+      Policies:
+      - LAMBDANAMEPLACEHOLDERWriteAccessPolicy:
+          FileSystem: !Ref LAMBDANAMEPLACEHOLDERFileSystem
+          AccessPoint: !Ref AccessPoint
+      VpcConfig:
+        SecurityGroupIds:
+        - !Ref LAMBDANAMEPLACEHOLDERLambdaSecurityGroup
+        SubnetIds:
+        - !Ref LAMBDANAMEPLACEHOLDERLambdaSubnetA
+        - !Ref LAMBDANAMEPLACEHOLDERLambdaSubnetB
+      FileSystemConfigs:
+      - Arn: !GetAtt AccessPoint.Arn
+        LocalMountPath: /mnt/lambda
+
+  ApplicationResourceGroup:
+    Type: AWS::ResourceGroups::Group
+    Properties:
+      Name:
+        Fn::Join:
+        - ''
+        - - ApplicationInsights-SAM-
+          - Ref: AWS::StackName
+      ResourceQuery:
+        Type: CLOUDFORMATION_STACK_1_0
+  ApplicationInsightsMonitoring:
+    Type: AWS::ApplicationInsights::Application
+    Properties:
+      ResourceGroupName:
+        Fn::Join:
+        - ''
+        - - ApplicationInsights-SAM-
+          - Ref: AWS::StackName
+      AutoConfigurationEnabled: 'true'
+    DependsOn: ApplicationResourceGroup
+Outputs:
+  LAMBDANAMEPLACEHOLDERApi:
+    Description: API Gateway endpoint URL for Prod stage for LAMBDANAMEPLACEHOLDER LAMBDANAMEPLACEHOLDER function
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/LAMBDANAMEPLACEHOLDER/"

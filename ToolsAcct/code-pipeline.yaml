@@ -7,12 +7,12 @@
 #  limitations under the License.
 
 AWSTemplateFormatVersion: '2010-09-09'
-Description: CodePipeline for the Sample Lambda Function
+Description: CodePipeline for the LAMBDANAMEPLACEHOLDER Function
 Parameters:
   ProjectName:
     Description: Name of the Project
     Type: String
-    Default: sample-lambda
+    Default: LAMBDANAMEPLACEHOLDER
   S3Bucket:
     Description: S3 Bucket, which will hold the artifacts
     Type: String
@@ -258,9 +258,9 @@ Resources:
                 Version: 1
                 Provider: CloudFormation
               Configuration:
-                ChangeSetName: sample-lambda-test
+                ChangeSetName: LAMBDANAMEPLACEHOLDER-test
                 ActionMode: CHANGE_SET_REPLACE
-                StackName: sample-lambda-test
+                StackName: LAMBDANAMEPLACEHOLDER-test
                 Capabilities: CAPABILITY_NAMED_IAM
                 TemplatePath: BuildOutput::packaged-template.yml
                 #RoleArn: !Sub arn:aws:iam::${TestAccount}:role/cloudformationdeployer-role
@@ -285,9 +285,9 @@ Resources:
                 Version: 1
                 Provider: CloudFormation
               Configuration:
-                ChangeSetName: sample-lambda-test
+                ChangeSetName: LAMBDANAMEPLACEHOLDER-test
                 ActionMode: CHANGE_SET_EXECUTE
-                StackName: sample-lambda-test
+                StackName: LAMBDANAMEPLACEHOLDER-test
                 #RoleArn: !Sub arn:aws:iam::${TestAccount}:role/cloudformationdeployer-role
                 RoleArn:
                   Fn::If:
@@ -323,9 +323,9 @@ Resources:
                 Version: 1
                 Provider: CloudFormation
               Configuration:
-                ChangeSetName: sample-lambda-production
+                ChangeSetName: LAMBDANAMEPLACEHOLDER-production
                 ActionMode: CHANGE_SET_REPLACE
-                StackName: sample-lambda-production
+                StackName: LAMBDANAMEPLACEHOLDER-production
                 Capabilities: CAPABILITY_NAMED_IAM
                 TemplatePath: BuildOutput::packaged-template.yml
                 #RoleArn: !Sub arn:aws:iam::${ProductionAccount}:role/cloudformationdeployer-role
@@ -350,9 +350,9 @@ Resources:
                 Version: 1
                 Provider: CloudFormation
               Configuration:
-                ChangeSetName: sample-lambda-production
+                ChangeSetName: LAMBDANAMEPLACEHOLDER-production
                 ActionMode: CHANGE_SET_EXECUTE
-                StackName: sample-lambda-production
+                StackName: LAMBDANAMEPLACEHOLDER-production
                 #RoleArn: !Sub arn:aws:iam::${ProductionAccount}:role/cloudformationdeployer-role
                 RoleArn:
                   Fn::If:
